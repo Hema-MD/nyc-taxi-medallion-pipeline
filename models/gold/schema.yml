@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: fact_trips
+    description: Fact table containing one row per taxi trip
+    columns:
+      - name: trip_id
+        description: Surrogate key for each trip
+        tests:
+          - unique
+          - not_null
+      - name: pickup_location_id
+        description: Foreign key to dim_locations
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_locations')
+              field: location_id
+      - name: dropoff_location_id
+        description: Foreign key to dim_locations
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_locations')
+              field: location_id
+      - name: fare_amount
+        description: Trip fare amount in USD
+        tests:
+          - not_null
+
+  - name: dim_locations
+    description: Dimension table of unique pickup and dropoff location IDs
+    columns:
+      - name: location_id
+        description: Unique location identifier
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_datetime
+    description: Dimension table of unique trip timestamps with date parts
+    columns:
+      - name: trip_datetime
+        description: Unique trip pickup timestamp
+        tests:
+          - unique
+          - not_null
